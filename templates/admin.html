@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard - Wisdom's Kitchen</title>
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/header.css" />
+    <link rel="stylesheet" href="/static/css/admin.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <img src="/static/images/logo.png" alt="logo" class="logo" />
+        <div class="brand-text">
+          <h1>Wisdom's Kitchen Admin</h1>
+          <p class="slogan">Manage menu items and view shop details</p>
+        </div>
+      </div>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/menu">Menu</a>
+        <a href="/cart">Cart</a>
+        <a href="/admin">Admin</a>
+        <a href="/admin/logout">Logout</a>
+      </nav>
+    </header>
+
+    <main class="container admin-dashboard">
+      <h2>Admin Dashboard</h2>
+
+      {% if message %}
+      <div class="alert success">{{ message }}</div>
+      {% endif %}
+
+      <section class="admin-summary">
+        <div class="summary-card">
+          <h3>Total Menu Items</h3>
+          <p>{{ total_items }}</p>
+        </div>
+        <div class="summary-card">
+          <h3>Today's Orders</h3>
+          <p>{{ today_summary.order_count }}</p>
+        </div>
+        <div class="summary-card">
+          <h3>Items Ordered Today</h3>
+          <p>{{ today_summary.item_count }}</p>
+        </div>
+        <div class="summary-card">
+          <h3>Revenue Today</h3>
+          <p>₦ {{ '{:,.2f}'.format(today_summary.revenue) }}</p>
+        </div>
+        <div class="summary-card">
+          <h3>Bank Account</h3>
+          <p>{{ bank.bank_name }}</p>
+          <p>{{ bank.account_name }}</p>
+          <p>{{ bank.account_number }}</p>
+        </div>
+      </section>
+
+      <section class="admin-section">
+        <h3>Incoming Orders</h3>
+        {% if orders %}
+        <div class="order-list">
+          {% for order in orders %}
+          <div class="admin-card order-card">
+            <div class="admin-card-body">
+              <h4>Order #{{ order.id }} — {{ order.status }}</h4>
+              <p><strong>Name:</strong> {{ order.customer.name }}</p>
+              <p><strong>Phone:</strong> {{ order.customer.phone }}</p>
+              <p><strong>Email:</strong> {{ order.customer.email }}</p>
+              <p><strong>Address:</strong> {{ order.customer.address }}</p>
+              <p>
+                <strong>Total:</strong> ₦ {{ '{:,.2f}'|format(order.total) }}
+              </p>
+              <p>
+                <strong>Placed:</strong> {{ order.created_at or 'Not recorded'
+                }}
+              </p>
+              <p>
+                <strong>Status:</strong>
+                <span class="status-badge {{ order.status|lower }}"
+                  >{{ order.status }}</span
+                >
+              </p>
+              <strong>Items:</strong>
+              <ul>
+                {% for item in order.items %}
+                <li>
+                  {{ item.qty }} x {{ item.name }} — ₦ {{
+                  '%.2f'|format(item.subtotal) }}
+                </li>
+                {% endfor %}
+              </ul>
+              <form method="post" class="status-form">
+                <input
+                  type="hidden"
+                  name="action"
+                  value="update_order_status"
+                />
+                <input type="hidden" name="order_id" value="{{ order.id }}" />
+                <label for="status-{{ order.id }}">Update status</label>
+                <select id="status-{{ order.id }}" name="status">
+                  <option
+                    value="New"
+                    {%
+                    if
+                    order.status=""
+                    ="New"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    New
+                  </option>
+                  <option
+                    value="Preparing"
+                    {%
+                    if
+                    order.status=""
+                    ="Preparing"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Preparing
+                  </option>
+                  <option
+                    value="Ready"
+                    {%
+                    if
+                    order.status=""
+                    ="Ready"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Ready
+                  </option>
+                  <option
+                    value="Completed"
+                    {%
+                    if
+                    order.status=""
+                    ="Completed"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Completed
+                  </option>
+                  <option
+                    value="Cancelled"
+                    {%
+                    if
+                    order.status=""
+                    ="Cancelled"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Cancelled
+                  </option>
+                </select>
+                <button type="submit">Save</button>
+              </form>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p>No new orders yet.</p>
+        {% endif %}
+      </section>
+
+      <section class="admin-section">
+        <h3>Payment Account Details</h3>
+        <form method="post" class="admin-form">
+          <input type="hidden" name="action" value="save_bank" />
+
+          <label for="bank_name">Bank Name</label>
+          <input
+            type="text"
+            id="bank_name"
+            name="bank_name"
+            value="{{ bank.bank_name }}"
+            required
+          />
+
+          <label for="account_name">Account Name</label>
+          <input
+            type="text"
+            id="account_name"
+            name="account_name"
+            value="{{ bank.account_name }}"
+            required
+          />
+
+          <label for="account_number">Account Number</label>
+          <input
+            type="text"
+            id="account_number"
+            name="account_number"
+            value="{{ bank.account_number }}"
+            required
+          />
+
+          <button type="submit">Update Payment Details</button>
+        </form>
+      </section>
+
+      <section class="admin-section">
+        <h3>Add New Menu Item</h3>
+        <form method="post" enctype="multipart/form-data" class="admin-form">
+          <input type="hidden" name="action" value="add_item" />
+          <label for="name">Dish Name</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="price">Price (₦)</label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            step="0.01"
+            min="0"
+            required
+          />
+
+          <label for="image">Image filename</label>
+          <input
+            type="text"
+            id="image"
+            name="image"
+            placeholder="example.jpg"
+          />
+
+          <label for="image_file">Upload an image</label>
+          <input
+            type="file"
+            id="image_file"
+            name="image_file"
+            accept="image/*"
+          />
+          <p class="form-note">
+            Upload the photo directly here so you do not need to edit code or
+            type the filename manually.
+          </p>
+
+          <label for="desc">Description</label>
+          <textarea id="desc" name="desc" rows="3" required></textarea>
+
+          <button type="submit">Add Menu Item</button>
+        </form>
+      </section>
+
+      <section class="admin-section">
+        <div class="admin-section-header">
+          <h3>Current Menu</h3>
+        </div>
+        <div class="admin-grid">
+          {% for item in menu %}
+          <div class="admin-card">
+            <img
+              src="{{ url_for('static', filename='images/' ~ item.image) }}"
+              alt="{{ item.name }}"
+              class="menu-img"
+            />
+            <div class="admin-card-body">
+              <form
+                method="post"
+                enctype="multipart/form-data"
+                class="admin-item-form"
+              >
+                <input type="hidden" name="action" value="update_item" />
+                <input type="hidden" name="item_id" value="{{ item.id }}" />
+
+                <label for="name-{{ item.id }}">Name</label>
+                <input
+                  type="text"
+                  id="name-{{ item.id }}"
+                  name="name"
+                  value="{{ item.name }}"
+                  required
+                />
+
+                <label for="price-{{ item.id }}">Price (₦)</label>
+                <input
+                  type="number"
+                  id="price-{{ item.id }}"
+                  name="price"
+                  value="{{ item.price }}"
+                  step="0.01"
+                  min="0"
+                  required
+                />
+
+                <label for="image-{{ item.id }}">Image filename</label>
+                <input
+                  type="text"
+                  id="image-{{ item.id }}"
+                  name="image"
+                  value="{{ item.image }}"
+                />
+
+                <label for="image_file-{{ item.id }}">Upload new image</label>
+                <input
+                  type="file"
+                  id="image_file-{{ item.id }}"
+                  name="image_file"
+                  accept="image/*"
+                />
+                <p class="form-note">
+                  Upload a new photo to update this item’s image without
+                  touching code.
+                </p>
+
+                <label for="desc-{{ item.id }}">Description</label>
+                <textarea id="desc-{{ item.id }}" name="desc" rows="3">
+{{ item.desc }}</textarea
+                >
+
+                <div class="form-actions">
+                  <button type="submit">Save Item</button>
+                </div>
+              </form>
+              <form method="post" class="remove-form">
+                <input type="hidden" name="action" value="remove_item" />
+                <input type="hidden" name="item_id" value="{{ item.id }}" />
+                <button type="submit" class="danger-button">Remove</button>
+              </form>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="admin-section admin-password-section">
+        <h3>Change Admin Username / Password</h3>
+        <form method="post" class="admin-form">
+          <input type="hidden" name="action" value="change_password" />
+
+          <label for="new_username">New Admin Username (optional)</label>
+          <input
+            type="text"
+            id="new_username"
+            name="new_username"
+            placeholder="admin"
+          />
+
+          <label for="current_password">Current Password</label>
+          <input
+            type="password"
+            id="current_password"
+            name="current_password"
+            required
+          />
+
+          <label for="new_password">New Password</label>
+          <input
+            type="password"
+            id="new_password"
+            name="new_password"
+            required
+          />
+
+          <label for="confirm_password">Confirm New Password</label>
+          <input
+            type="password"
+            id="confirm_password"
+            name="confirm_password"
+            required
+          />
+
+          <button type="submit">Update Password</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; Wisdom's Kitchen</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,2 @@
+address = input()
+print(address)

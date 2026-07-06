@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Margherita Pizza",
+    "image": "margherita.jpg",
+    "price": 8000.0,
+    "desc": "Crisp, thin crust topped with melted mozzarella, fresh basil, and vibrant tomato \u2014 a simple classic."
+  },
+  {
+    "id": 3,
+    "name": "Spaghetti Marinara",
+    "image": "spaghetti.jpg",
+    "price": 12000.0,
+    "desc": "Al dente spaghetti in a slow-simmered tomato sauce, kissed with garlic, herbs, and a shower of parmesan."
+  },
+  {
+    "id": 4,
+    "name": "Penne Arrabbiata",
+    "image": "penne.jpg",
+    "price": 12000.0,
+    "desc": "Penne tossed in a fiery tomato-chili sauce \u2014 bright, zesty, and full of personality."
+  },
+  {
+    "id": 5,
+    "name": "Side Chips",
+    "image": "side.jpg",
+    "price": 3000.0,
+    "desc": "Crispy, golden fries seasoned with sea salt \u2014 the perfect crunchy companion."
+  },
+  {
+    "id": 6,
+    "name": "Combo: Slice + Chips",
+    "image": "combo.jpg",
+    "price": 2000.0,
+    "desc": "A satisfying pairing of a warm slice and crispy chips \u2014 comfort food done right."
+  },
+  {
+    "id": 7,
+    "name": "calazone",
+    "image": "images.jfif",
+    "price": 8000.0,
+    "desc": "A calzone is an Italian folded pizza traditionally filled with cheese, cured meats, and vegetables. Originating in Naples, it encloses its fillings inside pizza dough that\u2019s baked or fried, creating a portable, sealed meal. Calzones are popular worldwide as a hand-held alternative to conventional pizza slices"
+  }
+]

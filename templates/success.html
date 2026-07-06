@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Order Received - Wisdom's Kitchen</title>
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/header.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <img src="/static/images/logo.png" alt="logo" class="logo" />
+        <div class="brand-text">
+          <h1>Wisdom's Kitchen</h1>
+          <p class="slogan">Authentic Taste, Served Fast</p>
+        </div>
+      </div>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/menu">Menu</a>
+        <a href="/cart">Cart</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h2>Thank you, {{ customer.name }}!</h2>
+      <p>
+        Your order totaling ₦ {{ "{:,.0f}"|format(total) }} has been received.
+      </p>
+      <p>
+        We will contact you at {{ customer.phone }} or {{ customer.email }} when
+        your order is ready/delivered.
+      </p>
+      <p><strong>Payment method:</strong> {{ payment.method }}</p>
+      {% if payment.method == 'Card' %}
+      <p>Charged to card ending in ****{{ payment.card_number }}</p>
+      {% else %}
+      <p>Please send payment to:</p>
+      <p>
+        <strong>Bank:</strong> {{ payment.bank_name }}<br />
+        <strong>Account Name:</strong> {{ payment.account_name }}<br />
+        <strong>Account Number:</strong> {{ payment.account_number }}
+      </p>
+      {% endif %}
+
+      <section class="order-details">
+        <h3>Delivery Address</h3>
+        <p>{{ customer.address }}</p>
+
+        <h3>Ordered Items</h3>
+        <ul>
+          {% for item in items %}
+          <li>
+            {{ item.qty }} x {{ item.name }} — ₦ {{ '%.2f'|format(item.subtotal) }}
+          </li>
+          {% endfor %}
+        </ul>
+        <p><strong>Order Total:</strong> ₦ {{ '{:,.2f}'|format(total) }}</p>
+      </section>
+
+      <a class="cta" href="/">Back to Home</a>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; Wisdom's Kitchen</p>
+    </footer>
+  </body>
+</html>

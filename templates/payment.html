@@ -1,0 +1,64 @@
+     <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout - Wisdom's Kitchen</title>
+  <link rel="stylesheet" href="/static/css/base.css" />
+  <link rel="stylesheet" href="/static/css/header.css" />
+  <link rel="stylesheet" href="/static/css/checkout.css" />
+  <script>
+    function togglePaymentFields() {
+      var method = document.querySelector('input[name="payment_method"]:checked').value;
+      document.getElementById('card-fields').style.display = method === 'card' ? 'block' : 'none';
+      document.getElementById('bank-info').style.display = method === 'bank' ? 'block' : 'none';
+    }
+    window.addEventListener('DOMContentLoaded', togglePaymentFields);
+  </script>
+</head>
+<body>
+     <h3>Payment</h3>
+      <label><input type="radio" name="payment_method" value="card" checked onchange="togglePaymentFields()"> Card (mock)</label>
+      <label><input type="radio" name="payment_method" value="bank" onchange="togglePaymentFields()"> Bank Transfer</label>
+   
+      <div id="card-fields">
+        <label>Cardholder Name <input name="card_name">
+        </label>
+        <label>Card Number 
+          <input name="card_number" placeholder="4242 4242 4242 4242">
+        </label>
+        <label>Expiry
+           <input name="expiry" placeholder="MM/YY">
+          </label>
+      </div>
+
+      <div id="bank-info" style="display:none" class="bank-info">
+        <p>Please transfer the total amount to the account below and include your name in the reference.</p>
+        <p><strong>Bank:</strong> {{ bank.bank_name }}<br>
+           <strong>Account Name:</strong> {{ bank.account_name }}<br>
+           <strong>Account Number:</strong> {{ bank.account_number }}</p>
+      </div>
+
+      <button type="submit">Place Order — ₦ {{ '%.2f'|format(total) }}</button>
+    </form>
+  </main>
+</body>
+</html>
+
+    <!doctype html>
+            <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <title>Checkout - Wisdom's Kitchen</title>
+              <link rel="stylesheet" href="/static/css/styles.css">
+              <script>
+                function togglePaymentFields() {
+                  var method = document.querySelector('input[name="payment_method"]:checked').value;
+                  document.getElementById('card-fields').style.display = method === 'card' ? 'block' : 'none';
+                  document.getElementById('bank-info').style.display = method === 'bank' ? 'block' : 'none';
+                }
+                window.addEventListener('DOMContentLoaded', togglePaymentFields);
+              </script>
+            </head>
+            <body>

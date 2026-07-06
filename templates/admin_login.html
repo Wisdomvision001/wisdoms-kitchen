@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Login - Wisdom's Kitchen</title>
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/header.css" />
+    <style>
+      .login-card {
+        max-width: 420px;
+        margin: 140px auto 60px;
+        background: #fff;
+        padding: 28px;
+        border-radius: 18px;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+      }
+      .login-card h2 {
+        margin-top: 0;
+        margin-bottom: 18px;
+      }
+      .login-card label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      .login-card input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin-bottom: 16px;
+        box-sizing: border-box;
+      }
+      .login-card button {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        background: var(--deep-red);
+        color: #fff;
+        border: none;
+        font-weight: 700;
+      }
+      .login-card .error {
+        margin-bottom: 16px;
+        color: #c62828;
+        font-weight: 600;
+      }
+      .login-card p {
+        margin: 0;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <img src="/static/images/logo.png" alt="logo" class="logo" />
+        <div class="brand-text">
+          <h1>Wisdom's Kitchen</h1>
+          <p class="slogan">Admin Login</p>
+        </div>
+      </div>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/menu">Menu</a>
+        <a href="/cart">Cart</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <div class="login-card">
+        <h2>Admin sign-in</h2>
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        <form method="post">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required />
+
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+
+          <button type="submit">Login</button>
+        </form>
+        <p>Use the admin credentials to manage the menu.</p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; Wisdom's Kitchen</p>
+    </footer>
+  </body>
+</html>

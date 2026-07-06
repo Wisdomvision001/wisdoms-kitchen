@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personal Information</title>
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/personal.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Personal Information</h1>
+      <form>
+        <div class="row">
+          <div class="col">
+            <label for="firstname">First Name:</label>
+            <input
+              type="text"
+              id="firstname"
+              placeholder="Enter First Name"
+              required
+            />
+          </div>
+          <div class="col">
+            <label for="lastname">Last Name:</label>
+            <input
+              type="text"
+              id="lastname"
+              placeholder="Enter Last Name"
+              required
+            />
+          </div>
+        </div>
+        <label for="address">Address:</label>
+        <textarea id="address" placeholder="Enter Address" required></textarea>
+        <div class="row">
+          <div class="col">
+            <label for="phone">Phone:</label>
+            <input
+              type="tel"
+              id="phone"
+              placeholder="Enter Phone Number"
+              required
+            />
+          </div>
+          <div class="col">
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter Email" required />
+          </div>
+        </div>
+        <label for="fir">FIR Number:</label>
+        <input type="text" id="fir" placeholder="Enter FIR Number" required />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>

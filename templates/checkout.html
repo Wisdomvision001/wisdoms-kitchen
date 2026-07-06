@@ -1,0 +1,167 @@
+`<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout - Wisdom's Kitchen</title>
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/header.css" />
+    <link rel="stylesheet" href="/static/css/checkout.css" />
+    <script>
+      function togglePaymentFields() {
+        var method = document.querySelector(
+          'input[name="payment_method"]:checked',
+        ).value;
+        document.getElementById("card-fields").style.display =
+          method === "card" ? "block" : "none";
+        document.getElementById("bank-info").style.display =
+          method === "bank" ? "block" : "none";
+      }
+      window.addEventListener("DOMContentLoaded", togglePaymentFields);
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <img src="/static/images/logo.png" alt="logo" class="logo" />
+        <div class="brand-text">
+          <h1>Wisdom's Kitchen</h1>
+          <p class="slogan">Authentic Taste, Served Fast</p>
+        </div>
+      </div>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/menu">Menu</a>
+        <a href="/cart">Cart</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h2>Checkout</h2>
+      <div class="order-summary">
+        <h3>Order Summary</h3>
+        <ul>
+          {% for row in items %}
+          <li>
+            {{ row.qty }} x {{ row.item.name }} — ₦ {{
+            '%.2f'|format(row.subtotal) }}
+          </li>
+          {% endfor %}
+        </ul>
+        <p class="total">Total: ₦ {{ '%.2f'|format(total) }}</p>
+      </div>
+
+      <div class="personal">
+        <form method="post" class="checkout-form">
+          <h3>Customer Info</h3>
+
+          <div class="row">
+            <div class="col">
+              <label for="name">Full Name:</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter Full Name"
+                required
+              />
+            </div>
+            <div class="col">
+              <label for="email">Email:</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter Email"
+                required
+              />
+            </div>
+          </div>
+
+          <label for="phone">Phone:</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Enter Phone Number"
+            required
+          />
+
+          <label for="address">Address:</label>
+          <textarea
+            id="address"
+            name="address"
+            placeholder="Enter Address"
+            required
+          ></textarea>
+
+          <div class="payment-method">
+            <h3>Payment Method</h3>
+            <label
+              ><input
+                type="radio"
+                name="payment_method"
+                value="card"
+                checked
+                onchange="togglePaymentFields()"
+              />
+              Card</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="payment_method"
+                value="bank"
+                onchange="togglePaymentFields()"
+              />
+              Bank Transfer</label
+            >
+          </div>
+
+          <div id="card-fields" style="display: block">
+            <label for="card_name">Name on Card:</label>
+            <input
+              type="text"
+              id="card_name"
+              name="card_name"
+              placeholder="Cardholder Name"
+            />
+
+            <label for="card_number">Card Number:</label>
+            <input
+              type="text"
+              id="card_number"
+              name="card_number"
+              placeholder="0000 0000 0000 0000"
+            />
+
+            <label for="expiry">Expiry Date:</label>
+            <input type="text" id="expiry" name="expiry" placeholder="MM/YY" />
+          </div>
+
+          <div
+            id="bank-info"
+            style="
+              display: none;
+              background: #fff8e1;
+              padding: 10px;
+              border-radius: 6px;
+              margin-top: 10px;
+            "
+          >
+            <p>Use bank transfer details shown after you place the order.</p>
+            <p><strong>Bank:</strong> {{ bank.bank_name }}</p>
+            <p><strong>Account:</strong> {{ bank.account_number }}</p>
+            <p><strong>Name:</strong> {{ bank.account_name }}</p>
+          </div>
+
+          <button type="submit" class="submit-button">Submit Order</button>
+        </form>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; Wisdom's Kitchen</p>
+    </footer>
+  </body>
+</html>

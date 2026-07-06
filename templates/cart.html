@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cart - Wisdom's Kitchen</title>
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/header.css" />
+    <link rel="stylesheet" href="/static/css/cart.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <img src="/static/images/logo.png" alt="logo" class="logo" />
+        <div class="brand-text">
+          <h1>Wisdom's Kitchen</h1>
+          <p class="slogan">Authentic Taste, Served Fast</p>
+        </div>
+      </div>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/menu">Menu</a>
+        <a href="/cart">Cart</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h2>Your Cart</h2>
+      {% if items %}
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Subtotal</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in items %}
+          <tr>
+            <td>{{ row.item.name }}</td>
+            <td>{{ row.qty }}</td>
+            <td>₦ {{ "{:,.0f}".format(row.subtotal) }}</td>
+            <td>
+              <form action="/remove_from_cart" method="post">
+                <input type="hidden" name="item_id" value="{{ row.item.id }}" />
+                <button type="submit">Remove</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p class="total">Total: ₦ {{ "{:,.0f}".format(total) }}</p>
+      <a class="cta" href="/checkout">Checkout</a>
+      {% else %}
+      <p>Your cart is empty. <a href="/menu">Browse menu</a></p>
+      {% endif %}
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; Wisdom's Kitchen</p>
+    </footer>
+  </body>
+</html>

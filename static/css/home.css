@@ -1,0 +1,21 @@
+.hero{
+  background-image: url('/static/images/food.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-overlay{
+  background: rgba(139, 28, 28, 0.55);
+  padding: 28px;
+  border-radius: 8px;
+  color: #fff;
+  text-align: center;
+}
+
+.hero-overlay h2{
+  margin: 0 0 8px 0;
+}

@@ -1,0 +1,17 @@
+.cart-table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cart-table th,
+.cart-table td{
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.total{
+  font-weight: 800;
+  font-size: 18px;
+  margin-top: 12px;
+}
