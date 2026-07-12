@@ -5,9 +5,49 @@
 
 .cart-table th,
 .cart-table td{
-  padding: 10px;
+  padding: 12px 10px;
   text-align: left;
   border-bottom: 1px solid #eee;
+}
+
+.quantity-control{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty-form{
+  display: inline-flex;
+}
+
+.qty-btn,
+.remove-btn{
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  color: #333;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-input{
+  width: 54px;
+  height: 36px;
+  text-align: center;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.remove-btn{
+  width: 40px;
+  color: #b42318;
+  font-size: 20px;
 }
 
 .total{

@@ -172,6 +172,17 @@ def get_item(item_id):
     return None
 
 
+def adjust_cart_quantity(cart, item_id, delta):
+    item_key = str(item_id)
+    current_quantity = int(cart.get(item_key, 0))
+    new_quantity = current_quantity + delta
+    if new_quantity <= 0:
+        cart.pop(item_key, None)
+        return cart
+    cart[item_key] = new_quantity
+    return cart
+
+
 def is_admin_logged_in():
     return session.get('admin_logged_in', False)
 
@@ -363,6 +374,17 @@ def remove_from_cart():
     cart = session.get('cart', {})
     if item_id in cart:
         cart.pop(item_id)
+        session['cart'] = cart
+    return redirect(url_for('cart'))
+
+
+@app.route('/adjust_cart_quantity', methods=['POST'])
+def adjust_cart_quantity_route():
+    item_id = request.form.get('item_id')
+    delta = int(request.form.get('delta', 0))
+    if item_id:
+        cart = session.get('cart', {})
+        cart = adjust_cart_quantity(cart, item_id, delta)
         session['cart'] = cart
     return redirect(url_for('cart'))
 

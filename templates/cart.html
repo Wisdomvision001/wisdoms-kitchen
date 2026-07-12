@@ -40,12 +40,52 @@
           {% for row in items %}
           <tr>
             <td>{{ row.item.name }}</td>
-            <td>{{ row.qty }}</td>
+            <td>
+              <div class="quantity-control">
+                <form
+                  action="/adjust_cart_quantity"
+                  method="post"
+                  class="qty-form"
+                >
+                  <input
+                    type="hidden"
+                    name="item_id"
+                    value="{{ row.item.id }}"
+                  />
+                  <input type="hidden" name="delta" value="-1" />
+                  <button type="submit" class="qty-btn">−</button>
+                </form>
+                <input
+                  type="number"
+                  class="qty-input"
+                  value="{{ row.qty }}"
+                  min="1"
+                  readonly
+                />
+                <form
+                  action="/adjust_cart_quantity"
+                  method="post"
+                  class="qty-form"
+                >
+                  <input
+                    type="hidden"
+                    name="item_id"
+                    value="{{ row.item.id }}"
+                  />
+                  <input type="hidden" name="delta" value="1" />
+                  <button type="submit" class="qty-btn">+</button>
+                </form>
+              </div>
+            </td>
             <td>₦ {{ "{:,.0f}".format(row.subtotal) }}</td>
             <td>
-              <form action="/remove_from_cart" method="post">
+              <form
+                action="/remove_from_cart"
+                method="post"
+                class="inline-form"
+              >
                 <input type="hidden" name="item_id" value="{{ row.item.id }}" />
-                <button type="submit">Remove</button>
+                <button type="submit" class="remove-btn">×</button>
               </form>
             </td>
           </tr>
